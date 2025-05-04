@@ -31,7 +31,7 @@ const Navbar: React.FC = () => {
         <div className="flex justify-between items-center">
           <div className="flex items-center">
             <Building className="h-8 w-8 text-amber-500" />
-            <span className="ml-2 text-xl font-bold text-gray-900 dark:text-white">ProphetEstate</span>
+            <span className="ml-2 text-xl font-bold text-gray-900 dark:text-white">DepaseoX</span>
           </div>
 
           {/* Desktop Menu */}
