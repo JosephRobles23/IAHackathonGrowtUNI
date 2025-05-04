@@ -1,18 +1,21 @@
 import React from 'react';
 import { Building, Mail, Phone, MapPin, Facebook, Twitter, Instagram, Linkedin } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 const Footer: React.FC = () => {
+  const { t } = useTranslation();
+  
   return (
-    <footer className="bg-gray-900 text-white pt-16 pb-8">
+    <footer className="bg-gray-900 text-white pt-16 pb-8 overflow-hidden">
       <div className="container mx-auto px-4 md:px-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
-          <div>
+          <div data-aos="fade-up" data-aos-delay="400">
             <div className="flex items-center mb-6">
               <Building className="h-8 w-8 text-amber-400" />
               <span className="ml-2 text-xl font-bold text-white">ProphetEstate</span>
             </div>
             <p className="text-gray-400 mb-6 font-light">
-              Leveraging advanced AI to transform how you find, analyze, and invest in real estate.
+              {t('footer.about')}
             </p>
             <div className="flex space-x-4">
               <SocialIcon Icon={Facebook} />
@@ -22,30 +25,30 @@ const Footer: React.FC = () => {
             </div>
           </div>
 
-          <div>
-            <h4 className="text-lg font-bold mb-6">Quick Links</h4>
+          <div data-aos="fade-up" data-aos-delay="500">
+            <h4 className="text-lg font-bold mb-6">{t('footer.quickLinks')}</h4>
             <ul className="space-y-3">
-              <FooterLink href="#features">Features</FooterLink>
-              <FooterLink href="#how-it-works">How It Works</FooterLink>
-              <FooterLink href="#testimonials">Testimonials</FooterLink>
-              <FooterLink href="#pricing">Pricing</FooterLink>
-              <FooterLink href="#">Blog</FooterLink>
+              <FooterLink href="#features">{t('nav.features')}</FooterLink>
+              <FooterLink href="#how-it-works">{t('nav.howItWorks')}</FooterLink>
+              <FooterLink href="#testimonials">{t('nav.testimonials')}</FooterLink>
+              <FooterLink href="#pricing">{t('nav.pricing')}</FooterLink>
+              <FooterLink href="#">{t('footer.blog')}</FooterLink>
             </ul>
           </div>
 
-          <div>
-            <h4 className="text-lg font-bold mb-6">Legal</h4>
+          <div data-aos="fade-up" data-aos-delay="600">
+            <h4 className="text-lg font-bold mb-6">{t('footer.legal')}</h4>
             <ul className="space-y-3">
-              <FooterLink href="#">Privacy Policy</FooterLink>
-              <FooterLink href="#">Terms of Service</FooterLink>
-              <FooterLink href="#">Cookie Policy</FooterLink>
-              <FooterLink href="#">GDPR Compliance</FooterLink>
-              <FooterLink href="#">Security</FooterLink>
+              <FooterLink href="#">{t('footer.privacyPolicy')}</FooterLink>
+              <FooterLink href="#">{t('footer.termsOfService')}</FooterLink>
+              <FooterLink href="#">{t('footer.cookiePolicy')}</FooterLink>
+              <FooterLink href="#">{t('footer.gdprCompliance')}</FooterLink>
+              <FooterLink href="#">{t('footer.security')}</FooterLink>
             </ul>
           </div>
 
-          <div>
-            <h4 className="text-lg font-bold mb-6">Contact Us</h4>
+          <div data-aos="fade-up" data-aos-delay="700">
+            <h4 className="text-lg font-bold mb-6">{t('footer.contactUs')}</h4>
             <ul className="space-y-4">
               <li className="flex items-start">
                 <MapPin className="h-5 w-5 text-amber-400 mr-3 mt-0.5" />
@@ -63,9 +66,9 @@ const Footer: React.FC = () => {
           </div>
         </div>
 
-        <div className="border-t border-gray-800 pt-8 mt-8 text-center">
+        <div className="border-t border-gray-800 pt-8 mt-8 text-center" data-aos="fade-up" data-aos-delay="500">
           <p className="text-gray-500 text-sm">
-            © {new Date().getFullYear()} ProphetEstate AI. All rights reserved.
+            © {new Date().getFullYear()} ProphetEstate AI. {t('footer.allRightsReserved')}
           </p>
         </div>
       </div>
