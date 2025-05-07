@@ -46,12 +46,17 @@ const HeroSection: React.FC = () => {
               {t('hero.subtitle')}
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <button className="px-8 py-3 bg-gradient-to-r from-amber-500 to-amber-400 text-white rounded-full font-medium text-lg hover:shadow-lg transition-all duration-300 hover:-translate-y-1 flex items-center justify-center">
+              <a 
+                href="https://wa.me/15556457930?text=Hola"
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="px-8 py-3 bg-gradient-to-r from-amber-500 to-amber-400 text-white rounded-full font-medium text-lg hover:shadow-lg transition-all duration-300 hover:-translate-y-1 flex items-center justify-center"
+              >
                 {t('hero.getStarted')} <ArrowRight className="ml-2 h-5 w-5" />
-              </button>
+              </a>
               <button 
                 onClick={openVideoModal}
-                className="px-8 py-3 bg-white dark:bg-dark-card border border-gray-300 dark:border-dark-border text-gray-700 dark:text-gray-200 rounded-full font-medium text-lg hover:shadow-md transition-all duration-300 flex items-center justify-center"
+                className="px-8 py-3 bg-white dark:bg-dark-card border border-gray-300 dark:border-dark-border text-gray-700 dark:text-gray-200 rounded-full font-medium text-lg dark:hover:bg-amber-500 dark:hover:text-white transition-all duration-300 flex items-center justify-center"
               >
                 {t('hero.seeDemo')}
               </button>

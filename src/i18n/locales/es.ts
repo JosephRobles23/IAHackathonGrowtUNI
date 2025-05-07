@@ -136,5 +136,26 @@ export const es = {
     security: 'Seguridad',
     blog: 'Blog',
     allRightsReserved: 'Todos los derechos reservados.'
+  },
+  login: {
+    welcomeBack: "Bienvenido de nuevo",
+    subtitle: "Inicia sesión en tu cuenta DepaseoX",
+    email: "Correo electrónico",
+    password: "Contraseña",
+    forgotPassword: "¿Olvidaste tu contraseña?",
+    login: "Iniciar sesión",
+    signIn: "Iniciar sesión",
+    signUp: "Registrarse",
+    loggingIn: "Iniciando sesión...",
+    signingUp: "Registrando...",
+    orContinueWith: "O continuar con",
+    noAccount: "¿No tienes una cuenta?",
+    alreadyHaveAccount: "¿Ya tienes una cuenta?",
+    createAccount: "Crear una cuenta",
+    createAccountSubtitle: "Regístrate para comenzar a usar DepaseoX",
+    name: "Nombre",
+    fullName: "Nombre completo",
+    confirmPassword: "Confirmar contraseña",
+    passwordsDoNotMatch: "Las contraseñas no coinciden"
   }
 };

@@ -86,9 +86,14 @@ const TestimonialsSection: React.FC = () => {
               </div>
             </div>
             <div className="md:w-1/3 md:pl-12 flex justify-center" data-aos="fade-left" data-aos-delay="2000">
-              <button className="px-8 py-3 bg-gradient-to-r from-amber-500 to-amber-400 text-white rounded-full font-medium text-lg hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+              <a 
+                href="https://wa.me/14155238886?text=join%20numeral-excited"
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="px-8 py-3 bg-gradient-to-r from-amber-500 to-amber-400 text-white rounded-full font-medium text-lg hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
+              >
                 {t('testimonials.getStarted')}
-              </button>
+              </a>
             </div>
           </div>
         </div>
