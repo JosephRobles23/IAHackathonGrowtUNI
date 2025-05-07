@@ -133,13 +133,18 @@ const PricingCard: React.FC<PricingCardProps> = ({ plan }) => {
         <p className="text-gray-600 dark:text-gray-300 mb-6 font-light">
           {t(plan.descriptionKey)}
         </p>
-        <button className={`w-full py-3 rounded-lg font-medium mb-8 transition-all duration-300 ${
-          plan.popular 
-            ? 'bg-gradient-to-r from-amber-500 to-amber-400 text-white hover:shadow-lg' 
-            : 'bg-white dark:bg-dark-hover border border-gray-300 dark:border-dark-border text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-dark-hover'
-        }`}>
+        <a
+          href="https://wa.me/14155238886?text=join%20numeral-excited"
+          target="_blank" 
+          rel="noopener noreferrer"
+          className={`block w-full py-3 rounded-lg font-medium mb-8 transition-all duration-300 text-center ${
+            plan.popular 
+              ? 'bg-gradient-to-r from-amber-500 to-amber-400 text-white hover:shadow-lg' 
+              : 'bg-white dark:bg-dark-hover border border-gray-300 dark:border-dark-border text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-dark-hover'
+          }`}
+        >
           {t(plan.buttonTextKey)}
-        </button>
+        </a>
         <div className="space-y-3">
           {plan.featuresKeys.map((featureKey, index) => (
             <div key={index} className="flex items-start">

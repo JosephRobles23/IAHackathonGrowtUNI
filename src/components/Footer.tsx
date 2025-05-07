@@ -1,12 +1,13 @@
 import React from 'react';
 import { Building, Mail, Phone, MapPin, Facebook, Twitter, Instagram, Linkedin } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 
 const Footer: React.FC = () => {
   const { t } = useTranslation();
   
   return (
-    <footer className="bg-gray-900 text-white pt-16 pb-8 overflow-hidden">
+    <footer className="bg-gray-900 text-white pt-8  overflow-hidden">
       <div className="container mx-auto px-4 md:px-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
           <div data-aos="fade-up" data-aos-delay="400">
@@ -32,7 +33,8 @@ const Footer: React.FC = () => {
               <FooterLink href="#how-it-works">{t('nav.howItWorks')}</FooterLink>
               <FooterLink href="#testimonials">{t('nav.testimonials')}</FooterLink>
               <FooterLink href="#pricing">{t('nav.pricing')}</FooterLink>
-              <FooterLink href="#">{t('footer.blog')}</FooterLink>
+              <RouterLink to="/docu-center">DocuCenter</RouterLink>
+              {/* <FooterLink href="#">{t('footer.blog')}</FooterLink> */}
             </ul>
           </div>
 
@@ -90,6 +92,19 @@ const FooterLink: React.FC<FooterLinkProps> = ({ href, children }) => {
       >
         {children}
       </a>
+    </li>
+  );
+};
+
+const RouterLink: React.FC<{ to: string; children: React.ReactNode }> = ({ to, children }) => {
+  return (
+    <li>
+      <Link 
+        to={to} 
+        className="text-gray-400 hover:text-amber-400 transition-colors font-light"
+      >
+        {children}
+      </Link>
     </li>
   );
 };

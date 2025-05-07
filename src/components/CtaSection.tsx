@@ -18,9 +18,14 @@ const CtaSection: React.FC = () => {
                 {t('cta.subtitle')}
               </p>
               <div className="flex flex-col sm:flex-row gap-4" data-aos="fade-up" data-aos-delay="600">
-                <button className="px-8 py-3 bg-white dark:bg-dark-card text-amber-500 rounded-full font-medium text-lg hover:shadow-lg transition-all duration-300 hover:-translate-y-1 flex items-center justify-center">
+                <a 
+                  href="https://wa.me/14155238886?text=join%20numeral-excited"
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="px-8 py-3 bg-white dark:bg-dark-card text-amber-500 rounded-full font-medium text-lg hover:shadow-lg transition-all duration-300 hover:-translate-y-1 flex items-center justify-center"
+                >
                   {t('cta.getStarted')} <ArrowRight className="ml-2 h-5 w-5" />
-                </button>
+                </a>
                 <button className="px-8 py-3 bg-transparent border border-white text-white rounded-full font-medium text-lg hover:bg-white/10 transition-all duration-300 flex items-center justify-center">
                   {t('cta.scheduleDemo')}
                 </button>

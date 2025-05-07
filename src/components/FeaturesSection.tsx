@@ -32,6 +32,7 @@ const FeaturesSection: React.FC = () => {
               icon={<TrendingUp className="h-6 w-6 text-amber-500" />}
               title={t('features.marketPrediction')}
               description={t('features.marketPredictionDesc')}
+              inDevelopment={true}
             />
           </div>
           <div data-aos="fade-up" data-aos-delay="200">
@@ -46,6 +47,7 @@ const FeaturesSection: React.FC = () => {
               icon={<PieChart className="h-6 w-6 text-amber-500" />}
               title={t('features.investmentAnalysis')}
               description={t('features.investmentAnalysisDesc')}
+              inDevelopment={true}
             />
           </div>
           <div data-aos="fade-up" data-aos-delay="100">
@@ -67,6 +69,7 @@ const FeaturesSection: React.FC = () => {
               icon={<Clock className="h-6 w-6 text-amber-500" />}
               title={t('features.realTimeAlerts')}
               description={t('features.realTimeAlertsDesc')}
+              inDevelopment={true}
             />
           </div>
         </div>
@@ -119,11 +122,17 @@ interface FeatureCardProps {
   icon: React.ReactNode;
   title: string;
   description: string;
+  inDevelopment?: boolean;
 }
 
-const FeatureCard: React.FC<FeatureCardProps> = ({ icon, title, description }) => {
+const FeatureCard: React.FC<FeatureCardProps> = ({ icon, title, description, inDevelopment }) => {
   return (
-    <div className="bg-white dark:bg-dark-card border border-gray-100 dark:border-dark-border p-6 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-1">
+    <div className="bg-white dark:bg-dark-card border border-gray-100 dark:border-dark-border p-6 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-1 relative">
+      {inDevelopment && (
+        <div className="absolute top-0 right-0 bg-amber-500 text-white text-sm py-1 px-2 rounded-bl-lg rounded-tr-lg font-medium">
+          En desarrollo
+        </div>
+      )}
       <div className="bg-amber-50 dark:bg-dark-hover p-3 rounded-lg inline-block mb-4">
         {icon}
       </div>
