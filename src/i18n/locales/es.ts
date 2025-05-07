@@ -7,7 +7,7 @@ export const es = {
     getStarted: 'Comenzar'
   },
   hero: {
-    title: 'Encuentra tu Propiedad Perfecta con Precisión AI',
+    title: 'Encuentra tu Propiedad Perfecta con Precisión IA',
     subtitle: 'Nuestra IA avanzada analiza miles de propiedades, tendencias del mercado y tus preferencias para encontrar tu inmueble ideal.',
     getStarted: 'Comenzar',
     seeDemo: 'Ver Demo',
