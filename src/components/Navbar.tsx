@@ -1,18 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { Building, Menu, X, LogIn, UserPlus } from 'lucide-react';
-import { Link as RouterLink } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Link } from './ui/Link';
 import ThemeToggle from './ThemeToggle';
 import LanguageToggle from './LanguageToggle';
 import { useTranslation } from 'react-i18next';
 import LoginModal from './LoginModal';
+import UserMenu from './UserMenu';
+import { supabase, UserData } from '../lib/supabase-client';
 
 const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<'signIn' | 'signUp'>('signIn');
+  const [user, setUser] = useState<UserData | null>(null);
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -22,6 +27,34 @@ const Navbar: React.FC = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+  
+  // Efecto para verificar si el usuario está autenticado
+  useEffect(() => {
+    const { data: authListener } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        if (session?.user) {
+          setUser(session.user as UserData);
+        } else {
+          setUser(null);
+          // Redirigir al inicio si el usuario cierra sesión y está en DocuCenter
+          if (window.location.pathname === '/docu-center') {
+            navigate('/');
+          }
+        }
+      }
+    );
+    
+    // Verificar el estado de autenticación al cargar
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session?.user) {
+        setUser(session.user as UserData);
+      }
+    });
+
+    return () => {
+      authListener.subscription.unsubscribe();
+    };
+  }, [navigate]);
 
   const openLogin = (tab: 'signIn' | 'signUp') => {
     setActiveTab(tab);
@@ -54,54 +87,66 @@ const Navbar: React.FC = () => {
               <Link href="#how-it-works">{t('nav.howItWorks')}</Link>
               <Link href="#testimonials">{t('nav.testimonials')}</Link>
               <Link href="#pricing">{t('nav.pricing')}</Link>
-              <RouterLink 
-                to="/docu-center" 
-                className="text-gray-700 dark:text-gray-200 hover:text-amber-500 dark:hover:text-amber-400 font-medium transition-colors"
-              >
-                DocuCenter
-              </RouterLink>
               <ThemeToggle />
               <LanguageToggle />
-              <button
-                onClick={() => openLogin('signIn')}
-                className="flex items-center px-4 py-2 border border-amber-500 text-amber-500 hover:bg-amber-500 hover:text-white rounded-full font-medium transition-all duration-300"
-              >
-                <LogIn className="h-4 w-4 mr-2" />
-                {t('login.signIn')}
-              </button>
-              <button
-                onClick={() => openLogin('signUp')}
-                className="flex items-center px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-400 text-white rounded-full font-medium hover:shadow-lg transition-all duration-300  hover:-translate-y-0.5"
-              >
-                <UserPlus className="h-4 w-4 mr-2" />
-                {t('login.signUp')}
-              </button>
-              {/* <a 
-                href="https://wa.me/14155238886?text=join%20numeral-excited"
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="px-6 py-2 bg-gradient-to-r from-amber-500 to-amber-400 text-white rounded-full font-medium hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5"
-              >
-                {t('nav.getStarted')}
-              </a> */}
+              
+              {/* User Menu o botones de login */}
+              {user ? (
+                <UserMenu 
+                  user={user} 
+                  isUserMenuOpen={isUserMenuOpen} 
+                  setIsUserMenuOpen={setIsUserMenuOpen}
+                />
+              ) : (
+                <>
+                  <button
+                    onClick={() => openLogin('signIn')}
+                    className="flex items-center px-4 py-2 border border-amber-500 text-amber-500 hover:bg-amber-500 hover:text-white rounded-full font-medium transition-all duration-300"
+                  >
+                    <LogIn className="h-4 w-4 mr-2" />
+                    {t('login.signIn')}
+                  </button>
+                  <button
+                    onClick={() => openLogin('signUp')}
+                    className="flex items-center px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-400 text-white rounded-full font-medium hover:shadow-lg transition-all duration-300  hover:-translate-y-0.5"
+                  >
+                    <UserPlus className="h-4 w-4 mr-2" />
+                    {t('login.signUp')}
+                  </button>
+                </>
+              )}
             </div>
 
             {/* Mobile Menu Button */}
             <div className="md:hidden flex items-center space-x-3">
               <ThemeToggle />
               <LanguageToggle />
-              <button
-                onClick={() => openLogin('signIn')}
-                className="text-amber-500"
-              >
-                <LogIn className="h-5 w-5" />
-              </button>
-              <button
-                onClick={() => openLogin('signUp')}
-                className="text-amber-500"
-              >
-                <UserPlus className="h-5 w-5" />
-              </button>
+              
+              {/* User Menu o botones de login para móvil */}
+              {user ? (
+                <UserMenu 
+                  user={user} 
+                  isUserMenuOpen={isUserMenuOpen} 
+                  setIsUserMenuOpen={setIsUserMenuOpen}
+                  isMobile={true}
+                />
+              ) : (
+                <>
+                  <button
+                    onClick={() => openLogin('signIn')}
+                    className="text-amber-500"
+                  >
+                    <LogIn className="h-5 w-5" />
+                  </button>
+                  <button
+                    onClick={() => openLogin('signUp')}
+                    className="text-amber-500"
+                  >
+                    <UserPlus className="h-5 w-5" />
+                  </button>
+                </>
+              )}
+              
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 className="text-gray-700 dark:text-gray-200"
@@ -131,13 +176,6 @@ const Navbar: React.FC = () => {
                 <Link href="#pricing" onClick={() => setIsMobileMenuOpen(false)}>
                   {t('nav.pricing')}
                 </Link>
-                <RouterLink 
-                  to="/docu-center" 
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="text-gray-700 dark:text-gray-200 hover:text-amber-500 dark:hover:text-amber-400 font-medium transition-colors"
-                >
-                  DocuCenter
-                </RouterLink>
                 <a 
                   href="https://wa.me/14155238886?text=join%20numeral-excited"
                   target="_blank" 

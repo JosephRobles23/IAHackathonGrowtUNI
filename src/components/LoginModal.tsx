@@ -1,13 +1,7 @@
 import React, { useState } from 'react';
-import { createClient } from '@supabase/supabase-js';
 import { X, Building, Apple, FileText } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-
-// Configuración de Supabase - las credenciales se cargarán desde .env.local
-const supabase = createClient(
-  import.meta.env.VITE_SUPABASE_URL || '',
-  import.meta.env.VITE_SUPABASE_ANON_KEY || ''
-);
+import { supabase } from '../lib/supabase-client';
 
 interface LoginModalProps {
   isOpen: boolean;
