@@ -1,9 +1,49 @@
-import React, { useState, useRef } from 'react';
-import { Upload, File, FileText, X, Trash2, Edit2, Search, ChevronLeft, ChevronRight } from 'lucide-react';
+import React, { useState, useRef, useEffect } from 'react';
+import { Upload, File, FileText, X, Trash2, Edit2, Search, ChevronLeft, ChevronRight, AlertCircle } from 'lucide-react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recharts';
+import { supabase, getCurrentUser } from '../lib/supabase-client';
+import type { UserData } from '../lib/supabase-client';
+
+// Interfaces y tipos
+interface FileDocument {
+  id: string;
+  name: string;
+  type: string;
+  size: string;
+  date: string;
+  description?: string;
+  folder_path?: string;
+  status?: string;
+}
+
+interface ChartItem {
+  name: string;
+  value: number;
+  color: string;
+}
+
+interface FileReference {
+  id: string;
+  created_at: string;
+  name: string;
+  description: string;
+  file_extension: string;
+  size_bytes: number;
+  status: string;
+  updated_at: string;
+  folder_path: string;
+  user_id: string;
+  folder_id: string;
+}
 
 // Componentes básicos
-const Button = ({ children, variant = "default", className = "", onClick, ...props }) => {
+const Button = ({ children, variant = "default", className = "", onClick, ...props }: {
+  children: React.ReactNode;
+  variant?: "default" | "outline" | "ghost" | "destructive";
+  className?: string;
+  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  [key: string]: unknown;
+}) => {
   const baseStyles =
     "inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background";
 
@@ -21,7 +61,7 @@ const Button = ({ children, variant = "default", className = "", onClick, ...pro
   );
 };
 
-const Input = ({ className = "", ...props }) => {
+const Input = ({ className = "", ...props }: React.InputHTMLAttributes<HTMLInputElement>) => {
   return (
     <input
       className={`flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 ${className}`}
@@ -30,7 +70,11 @@ const Input = ({ className = "", ...props }) => {
   );
 };
 
-const Progress = ({ value, className = "", indicatorClassName = "" }) => {
+const Progress = ({ value, className = "", indicatorClassName = "" }: {
+  value: number;
+  className?: string;
+  indicatorClassName?: string;
+}) => {
   return (
     <div className={`relative h-2 w-full overflow-hidden rounded-full bg-secondary ${className}`}>
       <div
@@ -41,7 +85,11 @@ const Progress = ({ value, className = "", indicatorClassName = "" }) => {
   );
 };
 
-const Dialog = ({ isOpen, onClose, children }) => {
+const Dialog = ({ isOpen, onClose, children }: {
+  isOpen: boolean;
+  onClose: () => void;
+  children: React.ReactNode;
+}) => {
   if (!isOpen) return null;
 
   return (
@@ -52,23 +100,12 @@ const Dialog = ({ isOpen, onClose, children }) => {
   );
 };
 
-// Tipos
-interface FileDocument {
-  id: number;
-  name: string;
-  type: string;
-  size: string;
-  date: string;
-}
-
-interface ChartItem {
-  name: string;
-  value: number;
-  color: string;
-}
-
 // DocuCenter componente principal
 const DocuCenter = () => {
+  // Estado para el usuario
+  const [user, setUser] = useState<UserData | null>(null);
+  const [loading, setLoading] = useState(true);
+  
   // Estados para el área de carga de archivos
   const [isDragging, setIsDragging] = useState(false);
   const [files, setFiles] = useState<File[]>([]);
@@ -78,32 +115,83 @@ const DocuCenter = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Estados para la tabla de documentos
-  const [documents, setDocuments] = useState<FileDocument[]>([
-    { id: 1, name: "Informe Anual 2023.pdf", type: "pdf", size: "2.4 MB", date: "2023-12-15" },
-    { id: 2, name: "Contrato de Servicio.docx", type: "docx", size: "1.8 MB", date: "2023-11-28" },
-    { id: 3, name: "Notas de Reunión.txt", type: "txt", size: "0.3 MB", date: "2023-12-05" },
-    { id: 4, name: "Presentación Proyecto.pdf", type: "pdf", size: "5.2 MB", date: "2023-12-10" },
-    { id: 5, name: "Presupuesto 2024.docx", type: "docx", size: "1.1 MB", date: "2023-12-18" },
-    { id: 6, name: "Lista de Tareas.txt", type: "txt", size: "0.1 MB", date: "2023-12-01" },
-    { id: 7, name: "Manual de Usuario.pdf", type: "pdf", size: "3.7 MB", date: "2023-11-15" },
-    { id: 8, name: "Propuesta Cliente.docx", type: "docx", size: "2.3 MB", date: "2023-12-08" },
-    { id: 9, name: "Registro de Cambios.txt", type: "txt", size: "0.5 MB", date: "2023-12-12" },
-    { id: 10, name: "Análisis de Mercado.pdf", type: "pdf", size: "4.1 MB", date: "2023-11-20" },
-  ]);
+  const [documents, setDocuments] = useState<FileDocument[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [editingDocument, setEditingDocument] = useState<{ id: number; name: string } | null>(null);
+  const [editingDocument, setEditingDocument] = useState<{ id: string; name: string } | null>(null);
   const [newName, setNewName] = useState("");
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  const [documentToDelete, setDocumentToDelete] = useState<number | null>(null);
+  const [documentToDelete, setDocumentToDelete] = useState<string | null>(null);
 
   // Estados para el gráfico
-  const [chartData, setChartData] = useState<ChartItem[]>([
-    { name: "PDF", value: 4, color: "#FF5252" },
-    { name: "DOCX", value: 3, color: "#448AFF" },
-    { name: "TXT", value: 3, color: "#BDBDBD" },
-  ]);
+  const [chartData, setChartData] = useState<ChartItem[]>([]);
+
+  // Obtener el usuario actual y sus documentos
+  useEffect(() => {
+    const getUser = async () => {
+      try {
+        const userData = await getCurrentUser();
+        setUser(userData);
+        
+        if (userData) {
+          fetchUserDocuments(userData.id);
+        }
+      } catch (error) {
+        console.error("Error al obtener el usuario:", error);
+        setError("Error al autenticar. Por favor, inicia sesión nuevamente.");
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    getUser();
+  }, []);
+
+  // Obtener documentos del usuario desde Supabase
+  const fetchUserDocuments = async (userId: string) => {
+    try {
+      const { data, error } = await supabase
+        .from("file_references")
+        .select("*")
+        .eq("user_id", userId)
+        .order("created_at", { ascending: false });
+
+      if (error) {
+        throw error;
+      }
+
+      if (data) {
+        const formattedDocs: FileDocument[] = data.map((doc: FileReference) => ({
+          id: doc.id,
+          name: doc.name,
+          type: getShortType(doc.file_extension),
+          size: formatBytes(doc.size_bytes),
+          date: doc.created_at,
+          description: doc.description,
+          folder_path: doc.folder_path,
+          status: doc.status
+        }));
+
+        setDocuments(formattedDocs);
+        updateChartData(formattedDocs);
+      }
+    } catch (error) {
+      console.error("Error al obtener documentos:", error);
+      setError("Error al cargar los documentos. Por favor, intenta nuevamente.");
+    }
+  };
+
+  // Formatear bytes a un formato legible
+  const formatBytes = (bytes: number): string => {
+    if (bytes === 0) return '0 Bytes';
+    
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+  };
 
   // Funciones para el área de carga de archivos
   const handleDragOver = (e: React.DragEvent) => {
@@ -165,42 +253,72 @@ const DocuCenter = () => {
     setFiles(files.filter((_, i) => i !== index));
   };
 
-  const uploadFiles = () => {
-    if (files.length === 0) return;
+  // Subir archivos al endpoint de Google Drive y guardar referencias en Supabase
+  const uploadFiles = async () => {
+    if (files.length === 0 || !user) return;
 
     setUploading(true);
     setProgress(0);
+    setError(null);
 
-    // Simulate upload progress
-    const interval = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) {
-          clearInterval(interval);
-          setUploading(false);
+    try {
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        const formData = new FormData();
+        formData.append('file', file);
+        
+        // Calcular progreso por archivo
+        const fileProgress = (i / files.length) * 100;
+        setProgress(fileProgress);
 
-          // Add uploaded files to documents
-          const newDocuments = files.map((file, index) => ({
-            id: documents.length + index + 1,
-            name: file.name,
-            type: file.name.split(".").pop()?.toLowerCase() || '',
-            size: `${(file.size / 1024).toFixed(1)} KB`,
-            date: new Date().toISOString().split("T")[0],
-          }));
+        // Llamar al endpoint externo para subir a Google Drive
+        const response = await fetch('https://starfish-app-de9zs.ondigitalocean.app/google-drive', {
+          method: 'POST',
+          body: formData,
+        });
 
-          setDocuments([...documents, ...newDocuments]);
-
-          // Update chart data
-          updateChartData([...documents, ...newDocuments]);
-
-          // Clear files
-          setTimeout(() => {
-            setFiles([]);
-          }, 500);
-          return 100;
+        if (!response.ok) {
+          throw new Error(`Error al subir el archivo ${file.name}`);
         }
-        return prev + 10;
-      });
-    }, 300);
+
+        const result = await response.json();
+
+        if (result.success) {
+          // Guardar referencia en Supabase
+          const { error: insertError } = await supabase
+            .from('file_references')
+            .insert({
+              name: result.file.name,
+              description: result.file.description || `Archivo subido a Google Drive`,
+              file_extension: result.file.file_extension,
+              size_bytes: result.file.size_bytes,
+              status: result.file.status,
+              folder_id: result.drive_info.folder_id,
+              folder_path: result.drive_info.folder_path,
+              user_id: user.id
+            });
+
+          if (insertError) {
+            throw insertError;
+          }
+        } else {
+          throw new Error(result.message || 'Error en la respuesta del servidor');
+        }
+      }
+
+      // Cuando se completa, actualizar la lista de documentos
+      setProgress(100);
+      setTimeout(() => {
+        fetchUserDocuments(user.id);
+        setFiles([]);
+        setUploading(false);
+      }, 500);
+
+    } catch (error) {
+      console.error("Error al subir archivos:", error);
+      setError(error instanceof Error ? error.message : "Error al subir los archivos");
+      setUploading(false);
+    }
   };
 
   // Funciones para la tabla de documentos
@@ -228,35 +346,63 @@ const DocuCenter = () => {
     }
   };
 
-  const handleEdit = (id: number, name: string) => {
+  const handleEdit = (id: string, name: string) => {
     setEditingDocument({ id, name });
     setNewName(name);
     setIsEditDialogOpen(true);
   };
 
-  const saveEdit = () => {
-    if (!editingDocument) return;
+  const saveEdit = async () => {
+    if (!editingDocument || !user) return;
 
-    setDocuments(documents.map((doc) => (doc.id === editingDocument.id ? { ...doc, name: newName } : doc)));
+    try {
+      const { error } = await supabase
+        .from('file_references')
+        .update({ name: newName })
+        .eq('id', editingDocument.id)
+        .eq('user_id', user.id);
 
-    setIsEditDialogOpen(false);
-    setEditingDocument(null);
+      if (error) throw error;
+
+      // Actualizar localmente
+      setDocuments(documents.map((doc) => (doc.id === editingDocument.id ? { ...doc, name: newName } : doc)));
+
+      setIsEditDialogOpen(false);
+      setEditingDocument(null);
+    } catch (error) {
+      console.error("Error al actualizar el documento:", error);
+      setError("Error al actualizar el nombre del documento");
+    }
   };
 
-  const openDeleteDialog = (id: number) => {
+  const openDeleteDialog = (id: string) => {
     setDocumentToDelete(id);
     setIsDeleteDialogOpen(true);
   };
 
-  const handleDelete = () => {
-    if (!documentToDelete) return;
+  const handleDelete = async () => {
+    if (!documentToDelete || !user) return;
 
-    const newDocuments = documents.filter((doc) => doc.id !== documentToDelete);
-    setDocuments(newDocuments);
-    updateChartData(newDocuments);
+    try {
+      const { error } = await supabase
+        .from('file_references')
+        .delete()
+        .eq('id', documentToDelete)
+        .eq('user_id', user.id);
 
-    setIsDeleteDialogOpen(false);
-    setDocumentToDelete(null);
+      if (error) throw error;
+
+      // Actualizar localmente
+      const newDocuments = documents.filter((doc) => doc.id !== documentToDelete);
+      setDocuments(newDocuments);
+      updateChartData(newDocuments);
+
+      setIsDeleteDialogOpen(false);
+      setDocumentToDelete(null);
+    } catch (error) {
+      console.error("Error al eliminar el documento:", error);
+      setError("Error al eliminar el documento");
+    }
   };
 
   const formatDate = (dateString: string) => {
@@ -295,6 +441,34 @@ const DocuCenter = () => {
 
   const totalDocuments = chartData.reduce((sum, item) => sum + item.value, 0);
 
+  const getShortType = (mimeOrExt: string) => {
+    if (!mimeOrExt) return 'DESCONOCIDO';
+    if (mimeOrExt.includes('pdf') || mimeOrExt.toLowerCase() === 'pdf') return 'PDF';
+    if (mimeOrExt.includes('word') || mimeOrExt.toLowerCase() === 'docx' || mimeOrExt.toLowerCase() === 'doc') return 'DOCX';
+    if (mimeOrExt.includes('plain') || mimeOrExt.toLowerCase() === 'txt' || mimeOrExt.includes('text')) return 'TXT';
+    return mimeOrExt.toUpperCase();
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen pt-20 dark:bg-dark-bg flex items-center justify-center">
+        <p className="text-xl text-gray-800 dark:text-white">Cargando...</p>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return (
+      <div className="min-h-screen pt-20 dark:bg-dark-bg flex flex-col items-center justify-center p-4">
+        <AlertCircle className="h-16 w-16 text-red-500 mb-4" />
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Acceso Denegado</h2>
+        <p className="text-gray-600 dark:text-gray-300 text-center max-w-md">
+          Debes iniciar sesión para acceder a DocuCenter. Por favor, inicia sesión y vuelve a intentarlo.
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen pt-20 dark:bg-dark-bg">
       <main className="container mx-auto px-4 py-8">
@@ -302,6 +476,7 @@ const DocuCenter = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2">
+            
             {/* Área de carga de archivos */}
             <div className="bg-white dark:bg-[#111827] rounded-lg p-6 mb-6 shadow-md">
               <h3 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">Subir Documentos</h3>
@@ -361,7 +536,7 @@ const DocuCenter = () => {
                     {uploading ? (
                       <div className="space-y-2">
                         <Progress value={progress} />
-                        <p className="text-sm text-gray-500 dark:text-gray-400">Subiendo... {progress}%</p>
+                        <p className="text-sm text-gray-500 dark:text-gray-400">Subiendo... {progress.toFixed(0)}%</p>
                       </div>
                     ) : (
                       <Button onClick={uploadFiles} className="w-full bg-[#FF9800] text-black hover:bg-[#F57C00]">
@@ -384,7 +559,7 @@ const DocuCenter = () => {
                     <Input
                       type="search"
                       placeholder="Buscar documentos..."
-                      className="pl-8 bg-white dark:bg-[#131631] border-gray-300 dark:border-gray-700 text-gray-200"
+                      className="pl-8 bg-white dark:bg-[#131631] border-gray-300 dark:border-gray-700 text-gray-900 dark:text-gray-200"
                       value={searchTerm}
                       onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value)}
                     />
@@ -436,7 +611,7 @@ const DocuCenter = () => {
                       ) : (
                         <tr>
                           <td colSpan={5} className="text-center py-6 text-gray-500 dark:text-gray-400">
-                            No se encontraron documentos
+                            {loading ? "Cargando documentos..." : "No se encontraron documentos"}
                           </td>
                         </tr>
                       )}
@@ -488,70 +663,81 @@ const DocuCenter = () => {
                 <p className="text-gray-500 dark:text-gray-400">Documentos totales</p>
               </div>
 
-              <div className="h-[300px] w-full">
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={chartData}
-                      cx="50%"
-                      cy="50%"
-                      innerRadius={60}
-                      outerRadius={90}
-                      paddingAngle={2}
-                      dataKey="value"
-                      label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-                      labelLine={false}
-                    >
-                      {chartData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={entry.color} />
-                      ))}
-                    </Pie>
-                    <Tooltip
-                      content={({ active, payload }) => {
-                        if (active && payload && payload.length) {
-                          const data = payload[0].payload;
-                          return (
-                            <div className="bg-white dark:bg-[#131631] border border-gray-200 dark:border-gray-800 rounded-md p-2 shadow-md">
-                              <div className="flex flex-col gap-0.5">
-                                <span className="text-xs text-gray-500 dark:text-gray-400">Tipo</span>
-                                <span className="font-bold text-gray-900 dark:text-white">{data.name}</span>
-                                <span className="text-xs text-gray-500 dark:text-gray-400 mt-1">Cantidad</span>
-                                <span className="font-bold text-gray-900 dark:text-white">{data.value} documentos</span>
-                                <span className="text-xs text-gray-500 dark:text-gray-400 mt-1">Porcentaje</span>
-                                <span className="font-bold text-gray-900 dark:text-white">{((data.value / totalDocuments) * 100).toFixed(1)}%</span>
-                              </div>
-                            </div>
-                          );
-                        }
-                        return null;
-                      }}
-                    />
-                    <Legend
-                      layout="vertical"
-                      verticalAlign="middle"
-                      align="right"
-                      formatter={(value, entry, index) => {
-                        const item = chartData[index];
-                        return (
-                          <span className="text-sm text-gray-900 dark:text-white">
-                            {value} ({item.value})
-                          </span>
-                        );
-                      }}
-                    />
-                  </PieChart>
-                </ResponsiveContainer>
-              </div>
-
-              <div className="grid grid-cols-3 gap-2">
-                {chartData.map((item, index) => (
-                  <div key={index} className="text-center">
-                    <div className="w-4 h-4 rounded-full mx-auto mb-1" style={{ backgroundColor: item.color }} />
-                    <p className="text-xs font-medium text-gray-900 dark:text-white">{item.name}</p>
-                    <p className="text-sm text-gray-700 dark:text-gray-300">{((item.value / totalDocuments) * 100).toFixed(1)}%</p>
+              {totalDocuments > 0 ? (
+                <>
+                  <div className="h-[300px] w-full">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <PieChart>
+                        <Pie
+                          data={chartData}
+                          cx="50%"
+                          cy="50%"
+                          innerRadius={60}
+                          outerRadius={90}
+                          paddingAngle={2}
+                          dataKey="value"
+                          label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                          labelLine={false}
+                        >
+                          {chartData.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={entry.color} />
+                          ))}
+                        </Pie>
+                        <Tooltip
+                          content={({ active, payload }) => {
+                            if (active && payload && payload.length) {
+                              const data = payload[0].payload;
+                              return (
+                                <div className="bg-white dark:bg-[#131631] border border-gray-200 dark:border-gray-800 rounded-md p-2 shadow-md">
+                                  <div className="flex flex-col gap-0.5">
+                                    <span className="text-xs text-gray-500 dark:text-gray-400">Tipo</span>
+                                    <span className="font-bold text-gray-900 dark:text-white">{data.name}</span>
+                                    <span className="text-xs text-gray-500 dark:text-gray-400 mt-1">Cantidad</span>
+                                    <span className="font-bold text-gray-900 dark:text-white">{data.value} documentos</span>
+                                    <span className="text-xs text-gray-500 dark:text-gray-400 mt-1">Porcentaje</span>
+                                    <span className="font-bold text-gray-900 dark:text-white">{((data.value / totalDocuments) * 100).toFixed(1)}%</span>
+                                  </div>
+                                </div>
+                              );
+                            }
+                            return null;
+                          }}
+                        />
+                        <Legend
+                          layout="vertical"
+                          verticalAlign="middle"
+                          align="right"
+                          formatter={(value, entry, index) => {
+                            const item = chartData[index];
+                            return (
+                              <span className="text-sm text-gray-900 dark:text-white">
+                                {value} ({item.value})
+                              </span>
+                            );
+                          }}
+                        />
+                      </PieChart>
+                    </ResponsiveContainer>
                   </div>
-                ))}
-              </div>
+
+                  <div className="grid grid-cols-3 gap-2">
+                    {chartData.map((item, index) => (
+                      <div key={index} className="text-center">
+                        <div className="w-4 h-4 rounded-full mx-auto mb-1" style={{ backgroundColor: item.color }} />
+                        <p className="text-xs font-medium text-gray-900 dark:text-white">{item.name}</p>
+                        <p className="text-sm text-gray-700 dark:text-gray-300">{((item.value / totalDocuments) * 100).toFixed(1)}%</p>
+                      </div>
+                    ))}
+                  </div>
+                </>
+              ) : (
+                <div className="flex flex-col items-center justify-center py-10">
+                  <FileText className="h-16 w-16 text-gray-300 mb-4" />
+                  <p className="text-gray-500 dark:text-gray-400 text-center">
+                    No hay documentos para mostrar. Sube tu primer documento para ver estadísticas.
+                  </p>
+                </div>
+              )}
             </div>
           </div>
         </div>
