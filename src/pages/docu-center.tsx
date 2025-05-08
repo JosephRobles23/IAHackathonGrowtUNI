@@ -333,16 +333,32 @@ const DocuCenter = () => {
   const totalPages = Math.ceil(filteredDocuments.length / documentsPerPage);
 
   const getDocumentIcon = (type: string) => {
-    switch (type) {
+    switch (type.toLowerCase()) {
       case "pdf":
-        return <FileText className="h-5 w-5 text-red-500" />;
+        return (
+          <div className="h-6 w-6 flex items-center justify-center rounded bg-red-500 text-white">
+            <FileText className="h-4 w-4" />
+          </div>
+        );
       case "docx":
       case "doc":
-        return <FileText className="h-5 w-5 text-blue-500" />;
+        return (
+          <div className="h-6 w-6 flex items-center justify-center rounded bg-blue-500 text-white">
+            <FileText className="h-4 w-4" />
+          </div>
+        );
       case "txt":
-        return <File className="h-5 w-5 text-gray-400" />;
+        return (
+          <div className="h-6 w-6 flex items-center justify-center rounded bg-gray-500 text-white">
+            <File className="h-4 w-4" />
+          </div>
+        );
       default:
-        return <File className="h-5 w-5 text-gray-400" />;
+        return (
+          <div className="h-6 w-6 flex items-center justify-center rounded bg-gray-500 text-white">
+            <File className="h-4 w-4" />
+          </div>
+        );
     }
   };
 
