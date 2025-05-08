@@ -762,12 +762,12 @@ const DocuCenter = () => {
       {/* Diálogo de edición */}
       <Dialog isOpen={isEditDialogOpen} onClose={() => setIsEditDialogOpen(false)}>
         <div>
-          <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Editar nombre del documento</h3>
+          <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white ">Editar nombre del documento</h3>
           <div className="py-4">
             <Input
               value={newName}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewName(e.target.value)}
-              className="bg-white dark:bg-[#131631] border-gray-300 dark:border-gray-700"
+              className="bg-white dark:bg-[#131631] border-gray-300 dark:border-gray-700 dark:text-gray-200"
             />
           </div>
           <div className="flex justify-end gap-2">

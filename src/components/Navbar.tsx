@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Building, Menu, X, LogIn, UserPlus } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Link } from './ui/Link';
 import ThemeToggle from './ThemeToggle';
 import LanguageToggle from './LanguageToggle';
@@ -18,6 +18,10 @@ const Navbar: React.FC = () => {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Verificar si estamos en la página DocuCenter
+  const isDocuCenter = location.pathname === '/docu-center';
 
   useEffect(() => {
     const handleScroll = () => {
@@ -65,6 +69,19 @@ const Navbar: React.FC = () => {
     setIsLoginOpen(false);
   };
 
+  // Función para manejar la navegación a secciones
+  const handleNavigation = (sectionId: string) => {
+    if (isDocuCenter) {
+      // Si estamos en DocuCenter, navegar a la página principal y agregar el hash
+      // Usamos window.location directamente para garantizar la redirección
+      window.location.href = `/#${sectionId}`;
+      return;
+    }
+    
+    // Si ya estamos en la página principal, solo cerrar el menú móvil
+    setIsMobileMenuOpen(false);
+  };
+
   return (
     <>
       <nav
@@ -83,10 +100,51 @@ const Navbar: React.FC = () => {
 
             {/* Desktop Menu */}
             <div className="hidden md:flex items-center space-x-4">
-              <Link href="#features">{t('nav.features')}</Link>
-              <Link href="#how-it-works">{t('nav.howItWorks')}</Link>
-              <Link href="#testimonials">{t('nav.testimonials')}</Link>
-              <Link href="#pricing">{t('nav.pricing')}</Link>
+              {isDocuCenter ? (
+                // Si estamos en DocuCenter, usar botones en lugar de Links
+                <>
+                  <button 
+                    className="text-gray-700 dark:text-gray-200 hover:text-amber-500 dark:hover:text-amber-400 transition-colors"
+                    onClick={() => handleNavigation('features')}
+                  >
+                    {t('nav.features')}
+                  </button>
+                  <button 
+                    className="text-gray-700 dark:text-gray-200 hover:text-amber-500 dark:hover:text-amber-400 transition-colors"
+                    onClick={() => handleNavigation('how-it-works')}
+                  >
+                    {t('nav.howItWorks')}
+                  </button>
+                  <button 
+                    className="text-gray-700 dark:text-gray-200 hover:text-amber-500 dark:hover:text-amber-400 transition-colors"
+                    onClick={() => handleNavigation('testimonials')}
+                  >
+                    {t('nav.testimonials')}
+                  </button>
+                  <button 
+                    className="text-gray-700 dark:text-gray-200 hover:text-amber-500 dark:hover:text-amber-400 transition-colors"
+                    onClick={() => handleNavigation('pricing')}
+                  >
+                    {t('nav.pricing')}
+                  </button>
+                </>
+              ) : (
+                // Si estamos en la página principal, usar Links normales
+                <>
+                  <Link href="#features" onClick={() => handleNavigation('features')}>
+                    {t('nav.features')}
+                  </Link>
+                  <Link href="#how-it-works" onClick={() => handleNavigation('how-it-works')}>
+                    {t('nav.howItWorks')}
+                  </Link>
+                  <Link href="#testimonials" onClick={() => handleNavigation('testimonials')}>
+                    {t('nav.testimonials')}
+                  </Link>
+                  <Link href="#pricing" onClick={() => handleNavigation('pricing')}>
+                    {t('nav.pricing')}
+                  </Link>
+                </>
+              )}
               <ThemeToggle />
               <LanguageToggle />
               
@@ -164,18 +222,51 @@ const Navbar: React.FC = () => {
           {isMobileMenuOpen && (
             <div className="md:hidden mt-4 py-4 bg-white dark:bg-dark-card rounded-lg shadow-lg dark:shadow-soft-dark">
               <div className="flex flex-col space-y-4 px-4">
-                <Link href="#features" onClick={() => setIsMobileMenuOpen(false)}>
-                  {t('nav.features')}
-                </Link>
-                <Link href="#how-it-works" onClick={() => setIsMobileMenuOpen(false)}>
-                  {t('nav.howItWorks')}
-                </Link>
-                <Link href="#testimonials" onClick={() => setIsMobileMenuOpen(false)}>
-                  {t('nav.testimonials')}
-                </Link>
-                <Link href="#pricing" onClick={() => setIsMobileMenuOpen(false)}>
-                  {t('nav.pricing')}
-                </Link>
+                {isDocuCenter ? (
+                  // Si estamos en DocuCenter, usar botones en lugar de Links
+                  <>
+                    <button 
+                      className="text-left text-gray-700 dark:text-gray-200 hover:text-amber-500 dark:hover:text-amber-400 transition-colors"
+                      onClick={() => handleNavigation('features')}
+                    >
+                      {t('nav.features')}
+                    </button>
+                    <button 
+                      className="text-left text-gray-700 dark:text-gray-200 hover:text-amber-500 dark:hover:text-amber-400 transition-colors"
+                      onClick={() => handleNavigation('how-it-works')}
+                    >
+                      {t('nav.howItWorks')}
+                    </button>
+                    <button 
+                      className="text-left text-gray-700 dark:text-gray-200 hover:text-amber-500 dark:hover:text-amber-400 transition-colors"
+                      onClick={() => handleNavigation('testimonials')}
+                    >
+                      {t('nav.testimonials')}
+                    </button>
+                    <button 
+                      className="text-left text-gray-700 dark:text-gray-200 hover:text-amber-500 dark:hover:text-amber-400 transition-colors"
+                      onClick={() => handleNavigation('pricing')}
+                    >
+                      {t('nav.pricing')}
+                    </button>
+                  </>
+                ) : (
+                  // Si estamos en la página principal, usar Links normales
+                  <>
+                    <Link href="#features" onClick={() => handleNavigation('features')}>
+                      {t('nav.features')}
+                    </Link>
+                    <Link href="#how-it-works" onClick={() => handleNavigation('how-it-works')}>
+                      {t('nav.howItWorks')}
+                    </Link>
+                    <Link href="#testimonials" onClick={() => handleNavigation('testimonials')}>
+                      {t('nav.testimonials')}
+                    </Link>
+                    <Link href="#pricing" onClick={() => handleNavigation('pricing')}>
+                      {t('nav.pricing')}
+                    </Link>
+                  </>
+                )}
                 <a 
                   href="https://wa.me/14155238886?text=join%20numeral-excited"
                   target="_blank" 
