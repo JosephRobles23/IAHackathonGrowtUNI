@@ -45,18 +45,18 @@ const HeroSection: React.FC = () => {
             <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 mb-8 font-light">
               {t('hero.subtitle')}
             </p>
-            <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex flex-row items-center sm:flex-row  gap-4">
               <a 
                 href="https://wa.me/15556457930?text=Hola"
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="px-8 py-3 bg-gradient-to-r from-amber-500 to-amber-400 text-white rounded-full font-medium text-lg hover:shadow-lg transition-all duration-300 hover:-translate-y-1 flex items-center justify-center"
+                className="px-7 py-3 bg-gradient-to-r from-amber-500 to-amber-400 text-white rounded-full font-medium text-lg hover:shadow-lg transition-all duration-300 hover:-translate-y-1 flex items-center justify-center"
               >
                 {t('hero.getStarted')} <ArrowRight className="ml-2 h-5 w-5" />
               </a>
               <button 
                 onClick={openVideoModal}
-                className="px-8 py-3 bg-white dark:bg-dark-card border border-gray-300 dark:border-dark-border text-gray-700 dark:text-gray-200 rounded-full font-medium text-lg dark:hover:bg-amber-500 dark:hover:text-white transition-all duration-300 flex items-center justify-center"
+                className="px-12 md:px-8 py-3 bg-white dark:bg-dark-card border border-gray-300 dark:border-dark-border text-gray-700 dark:text-gray-200 rounded-full font-medium text-lg dark:hover:bg-amber-500 dark:hover:text-white transition-all duration-300 flex items-center justify-center"
               >
                 {t('hero.seeDemo')}
               </button>

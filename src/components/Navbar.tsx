@@ -196,12 +196,12 @@ const Navbar: React.FC = () => {
                   >
                     <LogIn className="h-5 w-5" />
                   </button>
-                  <button
+                  {/* <button
                     onClick={() => openLogin('signUp')}
                     className="text-amber-500"
                   >
                     <UserPlus className="h-5 w-5" />
-                  </button>
+                  </button> */}
                 </>
               )}
               
@@ -267,7 +267,7 @@ const Navbar: React.FC = () => {
                     </Link>
                   </>
                 )}
-                <a 
+                {/* <a 
                   href="https://wa.me/14155238886?text=join%20numeral-excited"
                   target="_blank" 
                   rel="noopener noreferrer"
@@ -275,7 +275,7 @@ const Navbar: React.FC = () => {
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   {t('nav.getStarted')}
-                </a>
+                </a> */}
               </div>
             </div>
           )}

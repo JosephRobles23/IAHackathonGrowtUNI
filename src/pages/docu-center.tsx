@@ -332,31 +332,31 @@ const DocuCenter = () => {
 
   const totalPages = Math.ceil(filteredDocuments.length / documentsPerPage);
 
-  const getDocumentIcon = (type: string) => {
+  const renderMobileDocumentIcon = (type: string) => {
     switch (type.toLowerCase()) {
       case "pdf":
         return (
-          <div className="h-6 w-6 flex items-center justify-center rounded bg-red-500 text-white">
-            <FileText className="h-4 w-4" />
+          <div className="h-5 w-5 sm:h-6 sm:w-6 flex items-center justify-center rounded bg-red-500 text-white">
+            <FileText className="h-3 w-3 sm:h-4 sm:w-4" />
           </div>
         );
       case "docx":
       case "doc":
         return (
-          <div className="h-6 w-6 flex items-center justify-center rounded bg-blue-500 text-white">
-            <FileText className="h-4 w-4" />
+          <div className="h-5 w-5 sm:h-6 sm:w-6 flex items-center justify-center rounded bg-blue-500 text-white">
+            <FileText className="h-3 w-3 sm:h-4 sm:w-4" />
           </div>
         );
       case "txt":
         return (
-          <div className="h-6 w-6 flex items-center justify-center rounded bg-gray-500 text-white">
-            <File className="h-4 w-4" />
+          <div className="h-5 w-5 sm:h-6 sm:w-6 flex items-center justify-center rounded bg-gray-500 text-white">
+            <File className="h-3 w-3 sm:h-4 sm:w-4" />
           </div>
         );
       default:
         return (
-          <div className="h-6 w-6 flex items-center justify-center rounded bg-gray-500 text-white">
-            <File className="h-4 w-4" />
+          <div className="h-5 w-5 sm:h-6 sm:w-6 flex items-center justify-center rounded bg-gray-500 text-white">
+            <File className="h-3 w-3 sm:h-4 sm:w-4" />
           </div>
         );
     }
@@ -486,29 +486,29 @@ const DocuCenter = () => {
   }
 
   return (
-    <div className="min-h-screen pt-20 dark:bg-dark-bg">
-      <main className="container mx-auto px-4 py-8">
-        <h2 className="text-3xl font-bold mb-8 text-gray-900 dark:text-white">DocuCenter</h2>
+    <div className="min-h-screen pt-16 sm:pt-20 dark:bg-dark-bg">
+      <main className="container mx-auto px-3 sm:px-4 py-4 sm:py-8">
+        <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-8 text-gray-900 dark:text-white">DocuCenter</h2>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
           <div className="lg:col-span-2">
             
             {/* Área de carga de archivos */}
-            <div className="bg-white dark:bg-[#111827] rounded-lg p-6 mb-6 shadow-md">
-              <h3 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">Subir Documentos</h3>
+            <div className="bg-white dark:bg-[#111827] rounded-lg p-4 sm:p-6 mb-4 sm:mb-6 shadow-md">
+              <h3 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4 text-gray-900 dark:text-white">Subir Documentos</h3>
 
-              <div className="space-y-4">
+              <div className="space-y-3 sm:space-y-4">
                 <div
-                  className={`border-2 border-dashed rounded-lg p-8 text-center ${
+                  className={`border-2 border-dashed rounded-lg p-4 sm:p-8 text-center ${
                     isDragging ? "border-[#FF9800] bg-[#FF9800]/10" : "border-gray-300 dark:border-gray-700"
                   }`}
                   onDragOver={handleDragOver}
                   onDragLeave={handleDragLeave}
                   onDrop={handleDrop}
                 >
-                  <Upload className="mx-auto h-12 w-12 text-gray-400" />
-                  <h3 className="mt-2 text-lg font-semibold text-gray-900 dark:text-white">Arrastra y suelta tus documentos</h3>
-                  <p className="mt-1 text-sm text-gray-600 dark:text-gray-300">
+                  <Upload className="mx-auto h-8 w-8 sm:h-12 sm:w-12 text-gray-400" />
+                  <h3 className="mt-2 text-base sm:text-lg font-semibold text-gray-900 dark:text-white">Arrastra y suelta tus documentos</h3>
+                  <p className="mt-1 text-xs sm:text-sm text-gray-600 dark:text-gray-300">
                     O{" "}
                     <button className="text-[#FF9800] hover:underline" onClick={() => fileInputRef.current?.click()}>
                       selecciona archivos
@@ -527,23 +527,23 @@ const DocuCenter = () => {
                 </div>
 
                 {error && (
-                  <div className="bg-red-900/30 border border-red-800 text-red-300 px-4 py-2 rounded">{error}</div>
+                  <div className="bg-red-900/30 border border-red-800 text-red-300 px-3 py-2 text-xs sm:text-sm rounded">{error}</div>
                 )}
 
                 {files.length > 0 && (
-                  <div className="space-y-4">
+                  <div className="space-y-3 sm:space-y-4">
                     <div className="space-y-2">
                       {files.map((file, index) => (
-                        <div key={index} className="flex items-center justify-between bg-gray-100 dark:bg-[#131631] p-3 rounded">
+                        <div key={index} className="flex items-center justify-between bg-gray-100 dark:bg-[#131631] p-2 sm:p-3 rounded">
                           <div className="flex items-center">
-                            <File className="h-5 w-5 mr-2 text-[#FF9800]" />
+                            <File className="h-4 w-4 sm:h-5 sm:w-5 mr-1.5 sm:mr-2 text-[#FF9800]" />
                             <div>
-                              <p className="text-sm font-medium truncate max-w-[200px] sm:max-w-xs text-gray-900 dark:text-white">{file.name}</p>
-                              <p className="text-xs text-gray-500 dark:text-gray-400">{(file.size / 1024).toFixed(1)} KB</p>
+                              <p className="text-xs sm:text-sm font-medium truncate max-w-[120px] xs:max-w-[160px] sm:max-w-xs text-gray-900 dark:text-white">{file.name}</p>
+                              <p className="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400">{(file.size / 1024).toFixed(1)} KB</p>
                             </div>
                           </div>
                           <button onClick={() => removeFile(index)} className="text-gray-400 hover:text-gray-600 dark:hover:text-white">
-                            <X className="h-5 w-5" />
+                            <X className="h-4 w-4 sm:h-5 sm:w-5" />
                           </button>
                         </div>
                       ))}
@@ -552,10 +552,10 @@ const DocuCenter = () => {
                     {uploading ? (
                       <div className="space-y-2">
                         <Progress value={progress} />
-                        <p className="text-sm text-gray-500 dark:text-gray-400">Subiendo... {progress.toFixed(0)}%</p>
+                        <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">Subiendo... {progress.toFixed(0)}%</p>
                       </div>
                     ) : (
-                      <Button onClick={uploadFiles} className="w-full bg-[#FF9800] text-black hover:bg-[#F57C00]">
+                      <Button onClick={uploadFiles} className="w-full py-2 sm:py-2.5 text-xs sm:text-sm bg-[#FF9800] text-black hover:bg-[#F57C00]">
                         Subir {files.length} {files.length === 1 ? "archivo" : "archivos"}
                       </Button>
                     )}
@@ -565,10 +565,10 @@ const DocuCenter = () => {
             </div>
 
             {/* Tabla de documentos */}
-            <div className="bg-white dark:bg-[#111827] rounded-lg p-6 shadow-md">
-              <h3 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">Mis Documentos</h3>
+            <div className="bg-white dark:bg-[#111827] rounded-lg p-4 sm:p-6 shadow-md">
+              <h3 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4 text-gray-900 dark:text-white">Mis Documentos</h3>
 
-              <div className="space-y-4">
+              <div className="space-y-3 sm:space-y-4">
                 <div className="flex items-center space-x-2">
                   <div className="relative flex-1">
                     <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500" />
@@ -597,10 +597,10 @@ const DocuCenter = () => {
                       {currentDocuments.length > 0 ? (
                         currentDocuments.map((doc) => (
                           <tr key={doc.id} className="border-b border-gray-200 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-[#222a45]">
-                            <td className="p-3 font-medium">
-                              <div className="flex items-center gap-2">
-                                {getDocumentIcon(doc.type)}
-                                <span className="truncate max-w-[200px] sm:max-w-xs text-gray-900 dark:text-white">{doc.name}</span>
+                            <td className="p-2 sm:p-3 font-medium">
+                              <div className="flex items-center gap-1.5 sm:gap-2">
+                                {renderMobileDocumentIcon(doc.type)}
+                                <span className="truncate max-w-[100px] xs:max-w-[150px] sm:max-w-xs text-xs sm:text-sm text-gray-900 dark:text-white">{doc.name}</span>
                               </div>
                             </td>
                             <td className="p-3 uppercase text-xs text-gray-700 dark:text-gray-300">{doc.type}</td>
