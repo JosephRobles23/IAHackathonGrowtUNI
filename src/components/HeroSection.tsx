@@ -177,7 +177,7 @@ const HeroSection: React.FC = () => {
             </p>
             <div className="flex flex-col items-center sm:flex-row gap-4">
               <a 
-                href="https://wa.me/15556457930?text=Hola"
+                href="https://wa.me/51940125385?text=Hola,%20quiero%20saber%20más%20sobre%20DepaseoX"
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="px-12 max-w-xs sm:px-7 py-3 bg-gradient-to-r from-amber-500 to-amber-400 text-white rounded-full font-medium text-lg hover:shadow-lg transition-all duration-300 hover:-translate-y-1 flex items-center justify-center"
