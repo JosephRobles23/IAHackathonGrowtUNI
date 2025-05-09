@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Building, Menu, X, LogIn, UserPlus } from 'lucide-react';
+import { Building2, Menu, X, LogIn, UserPlus } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Link } from './ui/Link';
 import ThemeToggle from './ThemeToggle';
@@ -94,7 +94,7 @@ const Navbar: React.FC = () => {
         <div className="container mx-auto px-4 md:px-6">
           <div className="flex justify-between items-center">
             <div className="flex items-center">
-              <Building className="h-8 w-8 text-amber-500" />
+              <Building2 className="h-8 w-8 text-amber-500" />
               <span className="ml-2 text-xl font-bold text-gray-900 dark:text-white">DepaseoX</span>
             </div>
 

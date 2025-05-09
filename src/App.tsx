@@ -9,6 +9,7 @@ import PricingSection from './components/PricingSection';
 import CtaSection from './components/CtaSection';
 import Footer from './components/Footer';
 import DocuCenter from './pages/docu-center';
+import AdminPanel from './pages/panel-admin';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { supabase } from './lib/supabase-client';
@@ -93,6 +94,14 @@ function App() {
           element={
             <ProtectedRoute>
               <DocuCenter />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/panel-admin" 
+          element={
+            <ProtectedRoute>
+              <AdminPanel />
             </ProtectedRoute>
           } 
         />

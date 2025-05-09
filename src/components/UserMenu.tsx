@@ -1,5 +1,5 @@
-import React, { useRef, useEffect } from 'react';
-import { LogOut } from 'lucide-react';
+import React, { useRef } from 'react';
+import { LogOut, Settings } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { UserData, signOut } from '../lib/supabase-client';
@@ -21,8 +21,8 @@ const UserMenu: React.FC<UserMenuProps> = ({
   const navigate = useNavigate();
   const userMenuRef = useRef<HTMLDivElement>(null);
   
-  // Efecto para cerrar el menú al hacer clic fuera de él
-  /* seEffect(() => {
+  // Comentado para evitar errores de linter, ya que no se está utilizando
+  /* useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node)) {
         setIsUserMenuOpen(false);
@@ -53,6 +53,21 @@ const UserMenu: React.FC<UserMenuProps> = ({
       navigate('/docu-center');
       setIsUserMenuOpen(false);
     }
+  };
+  
+  const handleAdminPanelClick = () => {
+    if (user) {
+      console.log('Navegando a /panel-admin');
+      navigate('/panel-admin');
+      setIsUserMenuOpen(false);
+    }
+  };
+  
+  // Función para verificar si el usuario es administrador
+  const isAdmin = () => {
+    // Durante el desarrollo, siempre mostramos el botón de administrador
+    console.log('Usuario actual:', user);
+    return true;
   };
   
   // Función para obtener las iniciales del usuario
@@ -98,6 +113,17 @@ const UserMenu: React.FC<UserMenuProps> = ({
           >
             DocuCenter
           </button>
+          
+          {isAdmin() && (
+            <button 
+              onClick={handleAdminPanelClick}
+              className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-dark-hover flex items-center"
+            >
+              <Settings className="h-4 w-4 mr-2" />
+              Administrative Panel
+            </button>
+          )}
+          
           <button
             onClick={handleLogout}
             className="w-full text-left px-4 py-2 text-sm text-gray-700 rounded-b-lg dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-red-700 flex items-center"
