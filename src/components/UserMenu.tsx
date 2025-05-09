@@ -83,7 +83,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
       </button>
       
       {isUserMenuOpen && (
-        <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-dark-card rounded-lg shadow-lg py-2 z-50 border border-gray-200 dark:border-gray-700">
+        <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-dark-card rounded-lg shadow-lg pt-2 z-50 border border-gray-200 dark:border-gray-700">
           <div className="px-4 py-2 border-b border-gray-200 dark:border-gray-700">
             <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
               {user.user_metadata?.name || user.email}
@@ -100,10 +100,10 @@ const UserMenu: React.FC<UserMenuProps> = ({
           </button>
           <button
             onClick={handleLogout}
-            className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-dark-hover flex items-center"
+            className="w-full text-left px-4 py-2 text-sm text-gray-700 rounded-b-lg dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-red-700 flex items-center"
           >
             <LogOut className="h-4 w-4 mr-2" />
-            {t('login.signOut')}
+            {t('Sign Out')}
           </button>
         </div>
       )}

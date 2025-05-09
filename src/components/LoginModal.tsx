@@ -187,7 +187,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, initialTab = '
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-3 bg-gradient-to-r from-amber-500 to-amber-400 text-white rounded-lg font-medium hover:shadow-lg transition-all duration-300 disabled:opacity-50"
+                className="w-full py-3 bg-gradient-to-r from-amber-600 to-amber-400 text-white rounded-lg font-medium hover:from-amber-700 hover:to-amber-500"
               >
                 {loading ? t('login.loggingIn') : t('login.signIn')}
               </button>
@@ -265,7 +265,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, initialTab = '
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-3 bg-gradient-to-r from-amber-500 to-amber-400 text-white rounded-lg font-medium hover:shadow-lg transition-all duration-300 disabled:opacity-50"
+                className="w-full py-3 bg-gradient-to-r from-amber-600 to-amber-400 text-white rounded-lg font-medium hover:shadow-lg transition-all duration-300 disabled:opacity-50 hover:from-amber-700 hover:to-amber-500"
               >
                 {loading ? t('login.signingUp') : t('login.signUp')}
               </button>
