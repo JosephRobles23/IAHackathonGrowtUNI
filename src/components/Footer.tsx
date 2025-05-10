@@ -58,11 +58,11 @@ const Footer: React.FC = () => {
               </li>
               <li className="flex items-center">
                 <Mail className="h-4 w-4 sm:h-5 sm:w-5 text-amber-400 mr-2 sm:mr-3" />
-                <span className="text-xs sm:text-sm text-gray-400 font-light">contact@prophetestate.ai</span>
+                <span className="text-xs sm:text-sm text-gray-400 font-light">petter.chuquipiondo.r@uni.pe</span>
               </li>
               <li className="flex items-center">
                 <Phone className="h-4 w-4 sm:h-5 sm:w-5 text-amber-400 mr-2 sm:mr-3" />
-                <span className="text-xs sm:text-sm text-gray-400 font-light">+1 (555) 123-4567</span>
+                <span className="text-xs sm:text-sm text-gray-400 font-light">+1 (51) 955-329-623</span>
               </li>
             </ul>
           </div>
@@ -70,7 +70,7 @@ const Footer: React.FC = () => {
 
         <div className="border-t border-gray-800 pt-6 sm:pt-8 mt-6 sm:mt-8 text-center" data-aos="fade-up" data-aos-delay="500">
           <p className="text-xs sm:text-sm text-gray-500">
-            © {new Date().getFullYear()} ProphetEstate AI. {t('footer.allRightsReserved')}
+            © {new Date().getFullYear()} DepaseoX. {t('footer.allRightsReserved')}
           </p>
         </div>
       </div>
