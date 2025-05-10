@@ -279,7 +279,7 @@ const HeroSection: React.FC = () => {
       <VideoModal 
         isOpen={isVideoModalOpen} 
         onClose={closeVideoModal} 
-        videoUrl="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1" 
+        videoUrl="" 
       />
     </section>
   );
