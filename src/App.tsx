@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import HeroSection from './components/HeroSection';
@@ -13,6 +15,7 @@ import AdminPanel from './pages/panel-admin';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { supabase } from './lib/supabase-client';
+
 
 // Componente para rutas protegidas
 interface ProtectedRouteProps {
@@ -56,6 +59,8 @@ function HomePage() {
   return (
     <>
       <HeroSection />
+      <Analytics />
+      <SpeedInsights />
       <HowItWorksSection />
       <FeaturesSection />
       <TestimonialsSection />
