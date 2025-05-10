@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { LogOut, Settings } from 'lucide-react';
+import { LogOut, Settings, FolderClosed } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { UserData, signOut } from '../lib/supabase-client';
@@ -109,8 +109,9 @@ const UserMenu: React.FC<UserMenuProps> = ({
           </div>
           <button 
             onClick={handleDocuCenterClick}
-            className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-dark-hover"
+            className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-dark-hover flex items-center"
           >
+            <FolderClosed className="h-4 w-4 mr-2" />
             DocuCenter
           </button>
           
@@ -120,7 +121,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
               className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-dark-hover flex items-center"
             >
               <Settings className="h-4 w-4 mr-2" />
-              Administrative Panel
+              Admin Panel
             </button>
           )}
           

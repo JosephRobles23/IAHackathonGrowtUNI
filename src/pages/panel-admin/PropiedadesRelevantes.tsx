@@ -6,23 +6,23 @@ export default function PropiedadesRelevantes() {
   const propiedades = [
     {
       id: 1,
-      imagen: "/placeholder.svg?height=60&width=80",
+      imagen: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2jnUUDHQmeI6c6ENPVKl8gJ5yvRqXNGWQrw&s",
       nombre: "Apartamento Moderno Centro",
-      ubicacion: "Polanco, CDMX",
+      ubicacion: "La Molina, CDMX",
       precio: "$3,850,000",
       recomendaciones: 128,
     },
     {
       id: 2,
-      imagen: "/placeholder.svg?height=60&width=80",
+      imagen: "https://images.adsttc.com/media/images/5731/23cb/e58e/ce08/c100/0074/large_jpg/2014_11_DCPP_CasaJardin_521.jpg?1462838208",
       nombre: "Casa con Jardín",
-      ubicacion: "Coyoacán, CDMX",
+      ubicacion: "San Isidro, CDMX",
       precio: "$5,200,000",
       recomendaciones: 112,
     },
     {
       id: 3,
-      imagen: "/placeholder.svg?height=60&width=80",
+      imagen: "https://golfdesanisidro.com/wp-content/uploads/2021/10/SALA-COMEDOR-07.RGB_color.0001-1-scaled.jpg",
       nombre: "Penthouse con Terraza",
       ubicacion: "Condesa, CDMX",
       precio: "$7,500,000",
@@ -30,7 +30,7 @@ export default function PropiedadesRelevantes() {
     },
     {
       id: 4,
-      imagen: "/placeholder.svg?height=60&width=80",
+      imagen: "https://contractworkplaces.com/web/wp-content/uploads/2022/06/Diseno-de-oficina-Bayer-Peru-por-Contract-Workplaces.jpg",
       nombre: "Oficina Corporativa",
       ubicacion: "Santa Fe, CDMX",
       precio: "$12,800,000",
@@ -38,7 +38,7 @@ export default function PropiedadesRelevantes() {
     },
     {
       id: 5,
-      imagen: "/placeholder.svg?height=60&width=80",
+      imagen: "https://miroytengo.es/blog/wp-content/uploads/2019/04/miroytengo-blog-lof-industrial-0.jpg",
       nombre: "Loft Industrial",
       ubicacion: "Roma Norte, CDMX",
       precio: "$4,200,000",
@@ -54,7 +54,7 @@ export default function PropiedadesRelevantes() {
     },
     {
       id: 7,
-      imagen: "/placeholder.svg?height=60&width=80",
+      imagen: "https://media-cdn.tripadvisor.com/media/photo-s/09/6c/18/81/fairmont-mayakoba.jpg",
       nombre: "Casa Estilo Colonial",
       ubicacion: "San Ángel, CDMX",
       precio: "$8,700,000",
@@ -62,7 +62,7 @@ export default function PropiedadesRelevantes() {
     },
     {
       id: 8,
-      imagen: "/placeholder.svg?height=60&width=80",
+      imagen: "https://blog.remaxrd.com/wp-content/uploads/2022/02/aptos-amueblados.jpg",
       nombre: "Departamento Amueblado",
       ubicacion: "Nápoles, CDMX",
       precio: "$2,950,000",
@@ -70,7 +70,7 @@ export default function PropiedadesRelevantes() {
     },
     {
       id: 9,
-      imagen: "/placeholder.svg?height=60&width=80",
+      imagen: "https://galeniall.com/wp-content/uploads/2022/10/1621645311245-2-1170x785.jpg",
       nombre: "Terreno para Desarrollo",
       ubicacion: "Interlomas, Edo. Méx",
       precio: "$15,500,000",
@@ -78,7 +78,7 @@ export default function PropiedadesRelevantes() {
     },
     {
       id: 10,
-      imagen: "/placeholder.svg?height=60&width=80",
+      imagen: "https://media.istockphoto.com/id/1328520160/es/foto/sala-de-estar-con-un-gran-sof%C3%A1-de-color-claro-y-un-mont%C3%B3n-de-cojines-y-un-piano-negro-gran.jpg?s=612x612&w=0&k=20&c=PoyJ6h-zY36zpf7WECZCf4m7ievnkdZ2ulRNPYUcj8E=",
       nombre: "Casa con Vista Panorámica",
       ubicacion: "Lomas de Chapultepec, CDMX",
       precio: "$18,900,000",
@@ -88,7 +88,7 @@ export default function PropiedadesRelevantes() {
 
   // Datos simulados para el gráfico de barras horizontales
   const horizontalBarData = {
-    labels: ["Polanco", "Condesa", "Santa Fe", "Roma Norte", "Coyoacán", "Del Valle", "Nápoles", "San Ángel"],
+    labels: ["La Molina", "San Isidro", "Miraflores", "Roma Norte", "Coyoacán", "Del Valle", "Nápoles", "San Ángel"],
     datasets: [
       {
         label: "Solicitudes",

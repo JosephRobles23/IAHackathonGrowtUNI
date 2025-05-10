@@ -19,7 +19,7 @@ const CtaSection: React.FC = () => {
               </p>
               <div className="flex flex-col sm:flex-row gap-4" data-aos="fade-up" data-aos-delay="600">
                 <a 
-                  href="https://wa.me/14155238886?text=join%20numeral-excited"
+                  href="https://wa.me/51940125385?text=Hola,%20quiero%20saber%20más%20sobre%20DepaseoX"
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="px-8 py-3 bg-white dark:bg-dark-card text-amber-500 rounded-full font-medium text-lg hover:shadow-lg transition-all duration-300 hover:-translate-y-1 flex items-center justify-center"

@@ -230,7 +230,7 @@ const TestimonialsSection: React.FC = () => {
             </div>
             <div className="md:w-1/3 md:pl-12 flex justify-center" data-aos="fade-left" data-aos-delay="2000">
               <a 
-                href="https://wa.me/14155238886?text=join%20numeral-excited"
+                href="https://wa.me/51940125385?text=Hola,%20quiero%20saber%20más%20sobre%20DepaseoX"
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="px-8 py-3 bg-gradient-to-r from-amber-500 to-amber-400 text-white rounded-full font-medium text-lg hover:shadow-lg transition-all duration-300 hover:-translate-y-1"

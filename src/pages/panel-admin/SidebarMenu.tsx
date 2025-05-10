@@ -1,8 +1,8 @@
 "use client"
 
-import type React from "react"
-
+import React, { useState, useEffect } from "react"
 import { MessageSquare, Home, UserCheck, Building2, BrainCircuit, ThumbsUp, TrendingUp, FileDown } from "lucide-react"
+import { getCurrentUser } from "../../lib/supabase-client"
 
 type Section =
   | "Visión General"
@@ -20,6 +20,51 @@ interface SidebarMenuProps {
 }
 
 export default function SidebarMenu({ activeSection, onSectionChange }: SidebarMenuProps) {
+  const [userData, setUserData] = useState<{
+    name: string;
+    email: string;
+    initials: string;
+  }>({
+    name: "Cargando...",
+    email: "cargando@ejemplo.com",
+    initials: "..."
+  });
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const user = await getCurrentUser();
+        if (user) {
+          // Obtener el nombre del usuario o usar el email como fallback
+          const userName = user.user_metadata?.name || user.email?.split('@')[0] || 'Usuario';
+          
+          // Generar iniciales del nombre
+          let initials = 'U';
+          if (user.user_metadata?.name) {
+            const nameParts = user.user_metadata.name.split(' ');
+            if (nameParts.length > 1) {
+              initials = (nameParts[0][0] + nameParts[1][0]).toUpperCase();
+            } else {
+              initials = nameParts[0].substring(0, 2).toUpperCase();
+            }
+          } else if (user.email) {
+            initials = user.email.substring(0, 2).toUpperCase();
+          }
+          
+          setUserData({
+            name: userName,
+            email: user.email || 'Sin correo',
+            initials: initials
+          });
+        }
+      } catch (error) {
+        console.error("Error al obtener datos del usuario:", error);
+      }
+    };
+    
+    fetchUserData();
+  }, []);
+
   const menuItems: { icon: React.ElementType; label: Section }[] = [
     { icon: Home, label: "Visión General" },
     { icon: MessageSquare, label: "Interacciones del Usuario" },
@@ -69,13 +114,13 @@ export default function SidebarMenu({ activeSection, onSectionChange }: SidebarM
       </nav>
 
       <div className="p-4 border-t border-[#2A2A2A]">
-        <div className="flex items-center gap-3 px-4 py-2">
-          <div className="w-8 h-8 rounded-full bg-[#2A2A2A] flex items-center justify-center">
-            <span className="text-sm font-medium">AD</span>
+        <div className="flex items-center gap-3 px-2  py-2">
+          <div className="w-8 h-8 rounded-full bg-[#FFA726] text-black flex items-center justify-center">
+            <span className="text-sm font-medium">{userData.initials}</span>
           </div>
           <div>
-            <p className="text-sm font-medium">Admin DepaseoX</p>
-            <p className="text-xs text-gray-400">admin@depaseox.com</p>
+            <p className="text-sm font-medium text-white">{userData.name}</p>
+            <p className="text-xs text-gray-400">{userData.email}</p>
           </div>
         </div>
       </div>

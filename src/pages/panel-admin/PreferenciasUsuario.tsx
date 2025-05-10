@@ -36,9 +36,9 @@ export default function PreferenciasUsuario() {
 
   // Datos simulados para zonas más buscadas
   const topZonas = [
-    { nombre: "Polanco", busquedas: 245, icon: Building },
-    { nombre: "Condesa", busquedas: 198, icon: Home },
-    { nombre: "Santa Fe", busquedas: 176, icon: Building2 },
+    { nombre: "San Isidro", busquedas: 245, icon: Building },
+    { nombre: "Miraflores", busquedas: 198, icon: Home },
+    { nombre: "San Borja", busquedas: 176, icon: Building2 },
   ]
 
   // Datos simulados para preferencias adicionales
