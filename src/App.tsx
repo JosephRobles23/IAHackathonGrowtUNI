@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Analytics } from "@vercel/analytics/react";
-import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import HeroSection from './components/HeroSection';
@@ -59,7 +58,6 @@ function HomePage() {
   return (
     <>
       <HeroSection />
-      <SpeedInsights />
       <Analytics />
       <HowItWorksSection />
       <FeaturesSection />
