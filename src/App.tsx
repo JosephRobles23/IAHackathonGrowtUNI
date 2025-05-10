@@ -59,8 +59,8 @@ function HomePage() {
   return (
     <>
       <HeroSection />
-      <Analytics />
       <SpeedInsights />
+      <Analytics />
       <HowItWorksSection />
       <FeaturesSection />
       <TestimonialsSection />
